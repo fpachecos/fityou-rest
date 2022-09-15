@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "data.url",
+    "type": "java.lang.String",
+    "description": "A description for 'data.url'"
+  },
+  {
+    "name": "error.msg",
+    "type": "java.lang.String",
+    "description": "A description for 'error.msg'"
+  }
+]}
