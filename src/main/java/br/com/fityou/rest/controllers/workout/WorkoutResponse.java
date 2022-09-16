@@ -4,6 +4,7 @@ public class WorkoutResponse {
 
     public WorkoutResponse() {
         super();
+        setIsSuccess(true);
     };
 
     public WorkoutResponse(String message, String technicalMessage, Boolean isSuccess) {

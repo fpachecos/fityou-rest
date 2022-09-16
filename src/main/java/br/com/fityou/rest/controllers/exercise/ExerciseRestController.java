@@ -32,7 +32,8 @@ public class ExerciseRestController {
 	@GetMapping("/exercises")
 	public List<ResponseExercise> getExcercises() {
 		List<ResponseExercise> returnedList = (ArrayList<ResponseExercise>) ((LinkedHashMap<?, ?>) restTemplate
-				.getForObject(dataUrl.concat("exercises").concat("?sort=name,asc"), LinkedHashMap.class).get("_embedded")).get("exercise");
+				.getForObject(dataUrl.concat("exercises").concat("?sort=name,asc"), LinkedHashMap.class)
+				.get("_embedded")).get("exercise");
 		return returnedList;
 	}
 
@@ -43,20 +44,21 @@ public class ExerciseRestController {
 
 			restTemplate.postForLocation(dataUrl.concat("exercises"), exercise);
 
-			return new ResponseExercise("Excercício adicionado com sucesso.", null, true);
+			return new ResponseExercise("ExcercÃ­cio adicionado com sucesso.", null, true);
 		} catch (Exception e) {
-			return new ResponseExercise("[Erro] Problemas ao adicionar exercício.", e.getMessage(), false);
+			return new ResponseExercise("[Erro] Problemas ao adicionar exercÃ­cio.", e.getMessage(), false);
 		}
 	}
 
 	@DeleteMapping("/exercises/{id}")
 	public ResponseExercise remove(@PathVariable() Long id) {
 		try {
-		restTemplate.delete(dataUrl.concat("exercises").concat("/").concat(id.toString()));
-		
-		return new ResponseExercise("Exercício removido com sucesso. Ele foi removido também dos treinos vinculados.",
-				null, true);
-		}catch (Exception e) {
+			restTemplate.delete(dataUrl.concat("exercises").concat("/").concat(id.toString()));
+
+			return new ResponseExercise(
+					"ExercÃ­cio removido com sucesso. Ele foi removido tambÃ©m dos treinos vinculados.",
+					null, true);
+		} catch (Exception e) {
 			return new ResponseExercise("Erro inesperado, tente novamente mais tarde.",
 					e.getMessage(), true);
 		}

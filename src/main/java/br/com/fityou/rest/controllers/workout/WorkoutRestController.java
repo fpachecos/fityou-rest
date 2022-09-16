@@ -5,8 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +18,12 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class WorkoutRestController {
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate;
+
+    WorkoutRestController() {
+        restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+    }
 
     @Value("${data.url}")
     private String dataUrl;
@@ -54,13 +62,25 @@ public class WorkoutRestController {
      * @param workoutRequest
      * @return
      */
-    @DeleteMapping("/workouts")
-    public WorkoutResponse removeWorkout(@RequestBody WorkoutRequest workoutRequest) {
+    @DeleteMapping("/workouts/{id}")
+    public WorkoutResponse removeWorkout(@PathVariable() Long id) {
         try {
-            restTemplate.delete(dataUrl.concat("workouts").concat(workoutRequest.getId().toString()));
+            restTemplate.delete(dataUrl.concat("workouts").concat("/").concat(id.toString()));
             return new WorkoutResponse("Treino removido com sucesso.", null, true);
         } catch (Exception e) {
-            return new WorkoutResponse("Erro inesperado ao incluir esse novo treino.", e.getMessage(), false);
+            return new WorkoutResponse("Erro inesperado ao remover esse novo treino.", e.getMessage(), false);
+        }
+    }
+
+    @PatchMapping("/workouts/{id}")
+    public WorkoutResponse renameWorkout(@PathVariable() Long id, @RequestBody WorkoutRenameRequest request) {
+        try {
+            return restTemplate.patchForObject(
+                    dataUrl.concat("workouts").concat("/").concat(id.toString()), request,
+                    WorkoutResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new WorkoutResponse("Houve alguns problema ao renomear esse treino", e.getMessage(), false);
         }
     }
 

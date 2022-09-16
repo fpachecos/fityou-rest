@@ -18,8 +18,10 @@ public class RestApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:3000", "https://fityou-web-fpacheco-dev.apps.sandbox.x8i5.p1.openshiftapps.com/")
-						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+				registry.addMapping("/**")
+						.allowedOrigins("http://localhost:3000",
+								"https://fityou-web-fpacheco-dev.apps.sandbox.x8i5.p1.openshiftapps.com/")
+						.allowedMethods("GET", "PATCH", "POST", "PUT", "DELETE", "OPTIONS");
 			}
 		};
 	}
