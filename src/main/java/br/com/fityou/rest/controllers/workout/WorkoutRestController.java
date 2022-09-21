@@ -36,11 +36,20 @@ public class WorkoutRestController {
      */
     @SuppressWarnings("unchecked")
     @GetMapping("/workouts")
-    public List<WorkoutResponse> getExcercises() {
+    public List<WorkoutResponse> getWorkouts() {
         final List<WorkoutResponse> returnedList = (ArrayList<WorkoutResponse>) ((LinkedHashMap<?, ?>) restTemplate
                 .getForObject(dataUrl.concat("workouts").concat("?sort=name,asc"), LinkedHashMap.class)
                 .get("_embedded")).get("workout");
         return returnedList;
+    }
+
+    @GetMapping("/workouts/{id}")
+    public WorkoutResponse getWorkout(@PathVariable() Long id) {
+        final WorkoutResponse returned = restTemplate
+                .getForObject(
+                        dataUrl.concat("workouts").concat("/" + id).concat("?projection=workoutCompleteProjection"),
+                        WorkoutResponse.class);
+        return returned;
     }
 
     /**
@@ -73,11 +82,22 @@ public class WorkoutRestController {
     }
 
     @PatchMapping("/workouts/{id}")
-    public WorkoutResponse renameWorkout(@PathVariable() Long id, @RequestBody WorkoutRenameRequest request) {
+    public WorkoutResponse renameWorkout(@PathVariable() Long id, @RequestBody WorkoutRequest request) {
         try {
-            return restTemplate.patchForObject(
-                    dataUrl.concat("workouts").concat("/").concat(id.toString()), request,
-                    WorkoutResponse.class);
+            if (request.getName() != null && !"".equals(request.getName())) {
+                return restTemplate.patchForObject(
+                        dataUrl.concat("workouts").concat("/").concat(id.toString()),
+                        new WorkoutRenameRequest(request.getName()),
+                        WorkoutResponse.class);
+            }
+            if (request.getRestTime() != null && !"".equals(request.getRestTime())) {
+                return restTemplate.patchForObject(
+                        dataUrl.concat("workouts").concat("/").concat(id.toString()),
+                        new WorkoutRestTimeUpdateRequest(request.getRestTime()),
+                        WorkoutResponse.class);
+            }
+            return new WorkoutResponse("Ou o nome ou o tempo de descanço são obrigatórios para a atualização", null,
+                    false);
         } catch (Exception e) {
             e.printStackTrace();
             return new WorkoutResponse("Houve alguns problema ao renomear esse treino", e.getMessage(), false);

@@ -1,17 +1,15 @@
-package br.com.fityou.rest.controllers.workout;
+package br.com.fityou.rest.controllers.workoutItem;
 
 import java.util.List;
 
-import br.com.fityou.rest.controllers.workoutItem.WorkoutItemResponse;
+public class WorkoutCreationResponse {
 
-public class WorkoutResponse {
-
-    public WorkoutResponse() {
+    public WorkoutCreationResponse() {
         super();
         setIsSuccess(true);
     };
 
-    public WorkoutResponse(String message, String technicalMessage, Boolean isSuccess) {
+    public WorkoutCreationResponse(String message, String technicalMessage, Boolean isSuccess) {
         this.message = message;
         this.technicalMessage = technicalMessage;
         this.isSuccess = isSuccess;
@@ -30,14 +28,6 @@ public class WorkoutResponse {
     private String technicalMessage;
 
     private Boolean isSuccess;
-
-    public Boolean getIsSuccess() {
-        return isSuccess;
-    }
-
-    public void setIsSuccess(Boolean isSuccess) {
-        this.isSuccess = isSuccess;
-    }
 
     public Long getId() {
         return id;
@@ -77,6 +67,14 @@ public class WorkoutResponse {
 
     public void setTechnicalMessage(String technicalMessage) {
         this.technicalMessage = technicalMessage;
+    }
+
+    public Boolean getIsSuccess() {
+        return isSuccess;
+    }
+
+    public void setIsSuccess(Boolean isSuccess) {
+        this.isSuccess = isSuccess;
     }
 
     public List<WorkoutItemResponse> getWorkoutItems() {
