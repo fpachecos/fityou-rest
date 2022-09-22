@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import br.com.fityou.rest.controllers.workoutItem.WorkoutCreationResponse;
+import br.com.fityou.rest.controllers.workoutItem.WorkoutItemRequest;
+import br.com.fityou.rest.controllers.workoutItem.WorkoutItemResponse;
+
 @RestController
 public class WorkoutRestController {
 
@@ -74,6 +78,18 @@ public class WorkoutRestController {
     @DeleteMapping("/workouts/{id}")
     public WorkoutResponse removeWorkout(@PathVariable() Long id) {
         try {
+            WorkoutCreationResponse response = restTemplate.getForObject(
+                    dataUrl.concat("workouts/").concat(id.toString())
+                            .concat("?projection=workoutCompleteProjection"),
+                    WorkoutCreationResponse.class);
+
+            for (WorkoutItemResponse existingWorkoutItem : response.getWorkoutItems()) {
+                restTemplate.delete(dataUrl.concat("workouts/").concat(id.toString())
+                        .concat("/workoutItems/")
+                        .concat(existingWorkoutItem.getId().toString()));
+
+            }
+
             restTemplate.delete(dataUrl.concat("workouts").concat("/").concat(id.toString()));
             return new WorkoutResponse("Treino removido com sucesso.", null, true);
         } catch (Exception e) {
@@ -96,8 +112,8 @@ public class WorkoutRestController {
                         new WorkoutRestTimeUpdateRequest(request.getRestTime()),
                         WorkoutResponse.class);
             }
-            return new WorkoutResponse("Ou o nome ou o tempo de descanço são obrigatórios para a atualização", null,
-                    false);
+            return new WorkoutResponse("Ou o nome ou o tempo de descanço são obrigatórios para a atualização", null
+                    , false);
         } catch (Exception e) {
             e.printStackTrace();
             return new WorkoutResponse("Houve alguns problema ao renomear esse treino", e.getMessage(), false);
