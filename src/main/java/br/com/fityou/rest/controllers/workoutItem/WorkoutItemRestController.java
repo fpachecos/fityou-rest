@@ -1,7 +1,5 @@
 package br.com.fityou.rest.controllers.workoutItem;
 
-import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

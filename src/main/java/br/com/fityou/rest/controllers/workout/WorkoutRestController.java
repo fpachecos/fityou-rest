@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.fityou.rest.controllers.workoutItem.WorkoutCreationResponse;
-import br.com.fityou.rest.controllers.workoutItem.WorkoutItemRequest;
 import br.com.fityou.rest.controllers.workoutItem.WorkoutItemResponse;
 
 @RestController
@@ -112,8 +111,8 @@ public class WorkoutRestController {
                         new WorkoutRestTimeUpdateRequest(request.getRestTime()),
                         WorkoutResponse.class);
             }
-            return new WorkoutResponse("Ou o nome ou o tempo de descanço são obrigatórios para a atualização", null
-                    , false);
+            return new WorkoutResponse("Ou o nome ou o tempo de descanço são obrigatórios para a atualização", null,
+                    false);
         } catch (Exception e) {
             e.printStackTrace();
             return new WorkoutResponse("Houve alguns problema ao renomear esse treino", e.getMessage(), false);
