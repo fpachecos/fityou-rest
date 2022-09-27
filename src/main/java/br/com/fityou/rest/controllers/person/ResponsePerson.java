@@ -8,27 +8,31 @@ package br.com.fityou.rest.controllers.person;
  *
  */
 public class ResponsePerson {
-	
+
 	public ResponsePerson() {
-		
+		super();
+		this.isSuccess = true;
 	}
-	
-	public ResponsePerson(String message, String technicalMessage) {
+
+	public ResponsePerson(String message, String technicalMessage, Boolean isSuccess) {
 		this.message = message;
 		this.technicalMessage = technicalMessage;
+		this.isSuccess = isSuccess;
 	}
-	
+
 	private Long id;
 
 	private String name;
-	
+
 	private String phoneNumber;
-	
+
 	private Boolean acceptRecieveMessages;
-	
+
 	private String message;
-	
+
 	private String technicalMessage;
+
+	private Boolean isSuccess;
 
 	/**
 	 * @return the name
@@ -113,4 +117,13 @@ public class ResponsePerson {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public Boolean getIsSuccess() {
+		return isSuccess;
+	}
+
+	public void setIsSuccess(Boolean isSuccess) {
+		this.isSuccess = isSuccess;
+	}
+
 }

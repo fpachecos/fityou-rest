@@ -46,7 +46,7 @@ public class ExerciseRestController {
 
 			return new ResponseExercise("Excercício adicionado com sucesso.", null, true);
 		} catch (Exception e) {
-			return new ResponseExercise("[Erro] Problemas ao adicionar exercício.", e.getMessage(), false);
+			return new ResponseExercise("[Erro] Problemas ao adicionar exercício.", e.getMessage(),  false);
 		}
 	}
 
@@ -60,7 +60,7 @@ public class ExerciseRestController {
 					null, true);
 		} catch (Exception e) {
 			return new ResponseExercise("Erro inesperado, tente novamente mais tarde.",
-					e.getMessage(), true);
+					e.getMessage(), false);
 		}
 	}
 
