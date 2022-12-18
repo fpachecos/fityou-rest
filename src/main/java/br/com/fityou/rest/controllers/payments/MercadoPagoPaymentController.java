@@ -83,7 +83,7 @@ public class MercadoPagoPaymentController {
             HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
             factory.setHttpClient(httpClient);
 
-            restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+            restTemplate.setRequestFactory(factory);
 
             return restTemplate.patchForObject(dataUrl.concat("payments/").concat(paymentRequest.getId().toString()),
                     paymentRequest, PaymentResponse.class);
