@@ -20,7 +20,7 @@ public class RestApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 						.allowedOrigins("http://localhost:3000",
-								"http://localhost:19999")
+								"https://fityou-web.herokuapp.com")
 						.allowedMethods("GET", "PATCH", "POST", "PUT", "DELETE", "OPTIONS");
 			}
 		};
