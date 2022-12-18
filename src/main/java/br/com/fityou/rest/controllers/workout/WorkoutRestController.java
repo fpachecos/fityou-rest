@@ -1,5 +1,8 @@
 package br.com.fityou.rest.controllers.workout;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,15 +20,16 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.fityou.rest.controllers.workoutItem.WorkoutCreationResponse;
 import br.com.fityou.rest.controllers.workoutItem.WorkoutItemResponse;
+import br.com.fityou.rest.utils.RequestFactoryBuilder;
 
 @RestController
 public class WorkoutRestController {
 
     private RestTemplate restTemplate;
 
-    WorkoutRestController() {
+    WorkoutRestController() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        restTemplate.setRequestFactory(RequestFactoryBuilder.createSSLRequestFactory());
     }
 
     @Value("${data.url}")
@@ -111,8 +115,7 @@ public class WorkoutRestController {
                         new WorkoutRestTimeUpdateRequest(request.getRestTime()),
                         WorkoutResponse.class);
             }
-            return new WorkoutResponse("Ou o nome ou o tempo de descanço são obrigatórios para a atualização", null,
-                    false);
+            return new WorkoutResponse("Ou o nome ou o tempo de descanço são obrigatórios para a atualização", null, false);
         } catch (Exception e) {
             e.printStackTrace();
             return new WorkoutResponse("Houve alguns problema ao renomear esse treino", e.getMessage(), false);

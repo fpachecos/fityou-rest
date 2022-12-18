@@ -20,6 +20,8 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.payment.Payment;
 
+import br.com.fityou.rest.utils.RequestFactoryBuilder;
+
 @RestController
 public class MercadoPagoPaymentController {
 
@@ -68,16 +70,7 @@ public class MercadoPagoPaymentController {
 
         try {
 
-            SSLContextBuilder sslcontext = new SSLContextBuilder();
-            sslcontext.loadTrustMaterial(null, new TrustSelfSignedStrategy());
-
-            CloseableHttpClient httpClient = HttpClientBuilder.create().setSslcontext(sslcontext.build())
-                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE).build();
-
-            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-            factory.setHttpClient(httpClient);
-
-            restTemplate.setRequestFactory(factory);
+            restTemplate.setRequestFactory(RequestFactoryBuilder.createSSLRequestFactory());
 
             return restTemplate.patchForObject(dataUrl.concat("payments/").concat(paymentRequest.getId().toString()),
                     paymentRequest, PaymentResponse.class);
