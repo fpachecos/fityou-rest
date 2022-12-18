@@ -20,7 +20,7 @@ public class RestApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 						.allowedOrigins("http://localhost:3000",
-								"https://fityou-web-fpacheco-dev.apps.sandbox.x8i5.p1.openshiftapps.com/")
+								"http://localhost:19999")
 						.allowedMethods("GET", "PATCH", "POST", "PUT", "DELETE", "OPTIONS");
 			}
 		};
