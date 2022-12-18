@@ -1,5 +1,16 @@
 package br.com.fityou.rest.controllers.payments;
 
+import java.net.http.HttpClient;
+
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.http.nio.client.HttpAsyncClient;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +50,7 @@ public class MercadoPagoPaymentController {
         PaymentCreateRequest createPayment = PaymentCreateRequest.builder()
                 .transactionAmount(paymentRequest.getGrossAmount())
                 .token(paymentRequest.getToken())
-                .description("Pagamento de servço de Nutricionista e/ou Personal")
+                .description("Pagamento de servÃÂ§o de Nutricionista e/ou Personal")
                 .installments(paymentRequest.getInstallments())
                 .paymentMethodId(paymentRequest.getPaymentMethod())
                 .payer(PaymentPayerRequest.builder()
@@ -62,6 +73,15 @@ public class MercadoPagoPaymentController {
         paymentRequest.setNetAmount(payment.getTransactionDetails().getNetReceivedAmount());
 
         try {
+
+            SSLContextBuilder sslcontext = new SSLContextBuilder();
+            sslcontext.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+
+            CloseableHttpClient httpClient = HttpClientBuilder.create().setSslcontext(sslcontext.build())
+                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE).build();
+
+            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+            factory.setHttpClient(httpClient);
 
             restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
